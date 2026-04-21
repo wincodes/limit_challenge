@@ -75,6 +75,10 @@ export default function SubmissionsPage() {
         status: '' as SubmissionStatus | '',
         brokerId: '',
         companyQuery: '',
+        createdFrom: '',
+        createdTo: '',
+        hasDocuments: '' as '' | 'true' | 'false',
+        hasNotes: '' as '' | 'true' | 'false',
         page: 1,
       };
     }
@@ -82,6 +86,8 @@ export default function SubmissionsPage() {
     const params = new URLSearchParams(window.location.search);
     const initialStatus = params.get('status');
     const initialPage = Number(params.get('page') ?? 1);
+    const initialHasDocuments = params.get('hasDocuments');
+    const initialHasNotes = params.get('hasNotes');
 
     return {
       status:
@@ -90,6 +96,13 @@ export default function SubmissionsPage() {
           : '',
       brokerId: params.get('brokerId') ?? '',
       companyQuery: params.get('companySearch') ?? '',
+      createdFrom: params.get('createdFrom') ?? '',
+      createdTo: params.get('createdTo') ?? '',
+      hasDocuments:
+        initialHasDocuments === 'true' || initialHasDocuments === 'false'
+          ? initialHasDocuments
+          : '',
+      hasNotes: initialHasNotes === 'true' || initialHasNotes === 'false' ? initialHasNotes : '',
       page: Number.isFinite(initialPage) && initialPage > 0 ? initialPage : 1,
     };
   }, []);
@@ -99,6 +112,14 @@ export default function SubmissionsPage() {
   );
   const [brokerId, setBrokerId] = useState(initialFilters.brokerId);
   const [companyQuery, setCompanyQuery] = useState(initialFilters.companyQuery);
+  const [createdFrom, setCreatedFrom] = useState(initialFilters.createdFrom);
+  const [createdTo, setCreatedTo] = useState(initialFilters.createdTo);
+  const [hasDocuments, setHasDocuments] = useState<'' | 'true' | 'false'>(
+    initialFilters.hasDocuments as '' | 'true' | 'false',
+  );
+  const [hasNotes, setHasNotes] = useState<'' | 'true' | 'false'>(
+    initialFilters.hasNotes as '' | 'true' | 'false',
+  );
   const [page, setPage] = useState(initialFilters.page);
 
   const filters = useMemo(
@@ -106,15 +127,29 @@ export default function SubmissionsPage() {
       status: status || undefined,
       brokerId: brokerId || undefined,
       companySearch: companyQuery || undefined,
+      createdFrom: createdFrom || undefined,
+      createdTo: createdTo || undefined,
+      hasDocuments: hasDocuments === '' ? undefined : hasDocuments === 'true',
+      hasNotes: hasNotes === '' ? undefined : hasNotes === 'true',
       page,
     }),
-    [status, brokerId, companyQuery, page],
+    [status, brokerId, companyQuery, createdFrom, createdTo, hasDocuments, hasNotes, page],
   );
 
   const submissionsQuery = useSubmissionsList(filters);
   const brokerQuery = useBrokerOptions();
   const totalPages = Math.max(1, Math.ceil((submissionsQuery.data?.count ?? 0) / 10));
   const submissionCount = submissionsQuery.data?.count ?? 0;
+
+  const clearFilters = () => {
+    setStatus('');
+    setBrokerId('');
+    setCompanyQuery('');
+    setCreatedFrom('');
+    setCreatedTo('');
+    setHasDocuments('');
+    setHasNotes('');
+  };
 
   useEffect(() => {
     const params = new URLSearchParams();
@@ -126,6 +161,18 @@ export default function SubmissionsPage() {
     }
     if (companyQuery) {
       params.set('companySearch', companyQuery);
+    }
+    if (createdFrom) {
+      params.set('createdFrom', createdFrom);
+    }
+    if (createdTo) {
+      params.set('createdTo', createdTo);
+    }
+    if (hasDocuments) {
+      params.set('hasDocuments', hasDocuments);
+    }
+    if (hasNotes) {
+      params.set('hasNotes', hasNotes);
     }
     if (page > 1) {
       params.set('page', String(page));
@@ -142,7 +189,18 @@ export default function SubmissionsPage() {
     }
 
     router.replace(nextUrl, { scroll: false });
-  }, [brokerId, companyQuery, page, pathname, router, status]);
+  }, [
+    brokerId,
+    companyQuery,
+    createdFrom,
+    createdTo,
+    hasDocuments,
+    hasNotes,
+    page,
+    pathname,
+    router,
+    status,
+  ]);
 
   return (
     <Container maxWidth="xl" sx={{ py: { xs: 4, md: 6 } }}>
@@ -243,6 +301,77 @@ export default function SubmissionsPage() {
                 ))}
               </TextField>
             </Box>
+            <Box sx={{ width: { xs: '100%', md: 180 } }}>
+              <Typography sx={{ fontSize: 11, fontWeight: 800, textTransform: 'uppercase', mb: 1 }}>
+                Created From
+              </Typography>
+              <TextField
+                type="date"
+                value={createdFrom}
+                onChange={(event) => {
+                  setCreatedFrom(event.target.value);
+                  setPage(1);
+                }}
+                fullWidth
+                size="small"
+              />
+            </Box>
+
+            <Box sx={{ width: { xs: '100%', md: 180 } }}>
+              <Typography sx={{ fontSize: 11, fontWeight: 800, textTransform: 'uppercase', mb: 1 }}>
+                Created To
+              </Typography>
+              <TextField
+                type="date"
+                value={createdTo}
+                onChange={(event) => {
+                  setCreatedTo(event.target.value);
+                  setPage(1);
+                }}
+                fullWidth
+                size="small"
+              />
+            </Box>
+
+            <Box sx={{ width: { xs: '100%', md: 180 } }}>
+              <Typography sx={{ fontSize: 11, fontWeight: 800, textTransform: 'uppercase', mb: 1 }}>
+                Documents
+              </Typography>
+              <TextField
+                select
+                value={hasDocuments}
+                onChange={(event) => {
+                  setHasDocuments(event.target.value as '' | 'true' | 'false');
+                  setPage(1);
+                }}
+                fullWidth
+                size="small"
+              >
+                <MenuItem value="">All</MenuItem>
+                <MenuItem value="true">Has Documents</MenuItem>
+                <MenuItem value="false">No Documents</MenuItem>
+              </TextField>
+            </Box>
+
+            <Box sx={{ width: { xs: '100%', md: 180 } }}>
+              <Typography sx={{ fontSize: 11, fontWeight: 800, textTransform: 'uppercase', mb: 1 }}>
+                Notes
+              </Typography>
+              <TextField
+                select
+                value={hasNotes}
+                onChange={(event) => {
+                  setHasNotes(event.target.value as '' | 'true' | 'false');
+                  setPage(1);
+                }}
+                fullWidth
+                size="small"
+              >
+                <MenuItem value="">All</MenuItem>
+                <MenuItem value="true">Has Notes</MenuItem>
+                <MenuItem value="false">No Notes</MenuItem>
+              </TextField>
+            </Box>
 
             <Button
               variant="contained"
@@ -253,9 +382,9 @@ export default function SubmissionsPage() {
                 py: 1.2,
                 '&:hover': { bgcolor: '#47555a' },
               }}
-              onClick={() => setPage(1)}
+              onClick={() => clearFilters()}
             >
-              Apply Filters
+              Clear Filters
             </Button>
           </Box>
         </Box>
@@ -408,7 +537,7 @@ export default function SubmissionsPage() {
                       <Stack direction="row" alignItems="center" spacing={0.5}>
                         <ArticleOutlinedIcon style={{ fontSize: 18 }} />
                         <Typography sx={{ fontSize: 12, fontWeight: 700 }}>
-                          {String(submission.documentCount).padStart(2, '0')}
+                          {String(submission.documentCount)}
                         </Typography>
                       </Stack>
                       <Stack direction="row" alignItems="center" spacing={0.5}>
