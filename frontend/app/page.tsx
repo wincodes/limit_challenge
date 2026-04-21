@@ -39,7 +39,7 @@ export default function HomePage() {
                 mx: 1,
               }}
             >
-              Development Scaffold
+              Godwin Otokina
             </Box>
 
             <Typography
