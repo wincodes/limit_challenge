@@ -30,7 +30,7 @@ import { useSubmissionsList } from '@/lib/hooks/useSubmissions';
 import { SubmissionStatus } from '@/lib/types';
 
 const STATUS_OPTIONS: { label: string; value: SubmissionStatus | '' }[] = [
-  // { label: 'All statuses', value: '' },
+  { label: 'All statuses', value: '' },
   { label: 'New', value: 'new' },
   { label: 'In Review', value: 'in_review' },
   { label: 'Closed', value: 'closed' },
@@ -235,7 +235,7 @@ export default function SubmissionsPage() {
                 fullWidth
                 size="small"
               >
-                {/* <MenuItem value="">All Brokers</MenuItem> */}
+                <MenuItem value="">All Brokers</MenuItem>
                 {brokerQuery.data?.map((broker) => (
                   <MenuItem key={broker.id} value={String(broker.id)}>
                     {broker.name}
