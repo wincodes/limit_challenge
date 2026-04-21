@@ -1,0 +1,106 @@
+# ------------------------------
+# Python bytecode / cache
+# ------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ------------------------------
+# Python packaging / build
+# ------------------------------
+build/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+*.egg
+.installed.cfg
+MANIFEST
+pip-wheel-metadata/
+
+# ------------------------------
+# Virtual environments
+# ------------------------------
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# ------------------------------
+# Testing / coverage / type checks
+# ------------------------------
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+*.py,cover
+htmlcov/
+.pytest_cache/
+.hypothesis/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.ruff_cache/
+.tox/
+.nox/
+
+# ------------------------------
+# Django-specific
+# ------------------------------
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+
+# If collecting static into a custom folder, add it here:
+# static/
+
+# ------------------------------
+# Environment / secrets
+# ------------------------------
+.env
+.env.*
+*.env
+*.pem
+*.key
+*.crt
+
+# ------------------------------
+# Celery / task queue
+# ------------------------------
+celerybeat-schedule
+celerybeat.pid
+
+# ------------------------------
+# Jupyter notebooks
+# ------------------------------
+.ipynb_checkpoints/
+
+# ------------------------------
+# IDE / editor
+# ------------------------------
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ------------------------------
+# OS files
+# ------------------------------
+.DS_Store
+Thumbs.db
+
