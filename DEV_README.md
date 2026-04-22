@@ -41,7 +41,7 @@ Open:
 - List: `http://localhost:3000/submissions`
 - Detail example: `http://localhost:3000/submissions/1`
 
-## Demo Video (max 2 minutes)
+## Demo Video
 - Screen capture link: [https://drive.google.com/file/d/14MxDmfaYqT4Xy5ht2hg3t7zkcvInreCl/view?usp=sharing]
 
 ## Stretch Goals Implemented
@@ -60,6 +60,6 @@ cd frontend
 npm test
 ```
 
-## Deppoyment
-- Deployment link: []
+## Deployment
+- Dev Deployment link: [http://194.34.232.143:8001]
 
