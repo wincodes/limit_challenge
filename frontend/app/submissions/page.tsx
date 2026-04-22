@@ -66,6 +66,20 @@ function getPriorityChipStyles(priority: string) {
   return { bgcolor: '#dee3e6', color: '#2d3335' };
 }
 
+function useDebouncedValue(value: string, delayMs: number) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delayMs);
+
+    return () => clearTimeout(timer);
+  }, [value, delayMs]);
+
+  return debouncedValue;
+}
+
 export default function SubmissionsPage() {
   const pathname = usePathname();
   const router = useRouter();
@@ -121,19 +135,20 @@ export default function SubmissionsPage() {
     initialFilters.hasNotes as '' | 'true' | 'false',
   );
   const [page, setPage] = useState(initialFilters.page);
+  const debouncedCompanyQuery = useDebouncedValue(companyQuery, 1000);
 
   const filters = useMemo(
     () => ({
       status: status || undefined,
       brokerId: brokerId || undefined,
-      companySearch: companyQuery || undefined,
+      companySearch: debouncedCompanyQuery || undefined,
       createdFrom: createdFrom || undefined,
       createdTo: createdTo || undefined,
       hasDocuments: hasDocuments === '' ? undefined : hasDocuments === 'true',
       hasNotes: hasNotes === '' ? undefined : hasNotes === 'true',
       page,
     }),
-    [status, brokerId, companyQuery, createdFrom, createdTo, hasDocuments, hasNotes, page],
+    [status, brokerId, debouncedCompanyQuery, createdFrom, createdTo, hasDocuments, hasNotes, page],
   );
 
   const submissionsQuery = useSubmissionsList(filters);
