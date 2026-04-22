@@ -9,7 +9,7 @@
     "lint": "eslint",
     "format": "prettier --check .",
     "test": "jest",
-    "prepare": "husky install"
+    "prepare": "cd .. && npm exec --prefix frontend husky install .husky"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -35,11 +35,11 @@
     "eslint-config-next": "16.2.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
+    "husky": "^8.0.3",
     "jest": "^30.3.0",
     "jest-environment-jsdom": "^30.3.0",
     "prettier": "^3.8.1",
     "tailwindcss": "^4",
-    "typescript": "^5",
-    "husky": "^8.0.0"
+    "typescript": "^5"
   }
 }
